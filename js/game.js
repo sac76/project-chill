@@ -4,6 +4,7 @@ class GameEngineBase {
 	constructor(root) {
 		this.root = root;
 		this.gameObjects = [];
+		this.score = new Score();
 	}
 
 	init() {
@@ -17,6 +18,10 @@ class GameEngineBase {
 
 	create() {
 		this.gameObjects = [];
+
+		this.cursors = this.game.input.keyboard.createCursorKeys();
+
+		this.scoreText = this.game.add.text(16, 16, '0', { fontSize: '32px', fill: '#fff' })
 	}
 
 	update() {
@@ -34,12 +39,37 @@ class GameEngineBase {
 		}
 	}
 
+	setScore(newScore, animated) {
+		if (animated) {
+			this.score.totalScore = newScore;
+			this.scoreText.text = newScore;
+		} else {
+			this.score.totalScore = newScore;
+			this.scoreText.text = newScore;
+		}
+	}
+
 }
 
 class GameObjectBase {
 	constructor(game, sprite) {
 		this.game = game;
 		this.sprite = sprite;
+	}
+
+}
+
+class Score {
+	constructor() {
+		this.totalScore = 0;
+	}
+
+	increment(deltaScore) {
+		this.totalScore += deltaScore;
+	}
+
+	decrement(deltaScore) {
+		this.totalScore -= Math.max(0, deltaScore);
 	}
 
 }
