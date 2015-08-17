@@ -16,7 +16,7 @@ class GameEngineBase {
 	}
 
 	create() {
-		// override
+		this.gameObjects = [];
 	}
 
 	update() {

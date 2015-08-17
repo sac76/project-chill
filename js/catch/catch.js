@@ -13,26 +13,41 @@ class CatchGameEngine extends GameEngineBase {
 	}
 
 	create() {
+		super.create();
+
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		
 		// create player
-		this.player = new Player(this.game, this.game.add.sprite(20, 20, 'player', 0));
-
-		this.game.physics.arcade.enable(this.player.sprite);
-
-		this.player.sprite.body.gravity.y = 200;
-		// create files
-
+		this.player = new Player(this.game);
 		
+		// create files
+		for (var i = 0; i < 5; i++) {
+			var fileObject = new FileGameObject(this.game);
+			super.addGameObject(fileObject);
+		}
 	}
 
 }
 
 class Player extends GameObjectBase {
-	constructor(game, sprite) {
-		super(game, new Phaser.Sprite(game, 0, 0, 'player', 0));
-		//game.physics.arcade.enable(this);
-		//this.sprite.body.gravity.y = 20;
+	constructor(game) {
+		super(game, game.add.sprite(20, 20, 'player', 0));
+
+		game.physics.arcade.enable(this.sprite);
+
+		this.sprite.body.gravity.y = 100;
+		this.sprite.collideWorldBounds = true;
+	}
+}
+
+class FileGameObject extends GameObjectBase {
+	constructor(game) {
+		super(game, game.add.sprite(Math.random() * game.world.width, 0, 'file_pdf', 0));
+
+		game.physics.arcade.enable(this.sprite);
+
+		this.sprite.body.gravity.y = Math.round(50 + Math.random() * 100);
+		this.sprite.collideWorldBounds = true;
 	}
 }
 
