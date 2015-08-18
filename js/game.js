@@ -3,13 +3,14 @@
 class GameEngineBase {
 	constructor(root) {
 		this.root = root;
-		this.gameObjects = [];
+		this.sprites = [];
 		this.score = new Score();
 	}
 
 	init() {
 		this.game = new Phaser.Game(500, 400, Phaser.Auto, this.root, 
 			{ preload: this.preload, create: this.create, update: this.update });
+		this.game.transparent = true;
 	}
 
 	preload() {
@@ -17,25 +18,26 @@ class GameEngineBase {
 	}
 
 	create() {
-		this.gameObjects = [];
+		this.sprites = [];
+		this.score = new Score();
 
 		this.cursors = this.game.input.keyboard.createCursorKeys();
 
-		this.scoreText = this.game.add.text(16, 16, '0', { fontSize: '32px', fill: '#fff' })
+		this.scoreText = this.game.add.text(16, 16, '0', { fontSize: '32px', fill: '#000' })
 	}
 
 	update() {
 		// override
 	}
 
-	addGameObject(g) {
-		this.gameObjects.push(g);
+	addSprite(s) {
+		this.sprites.push(s);
 	}
 
-	removeGameObject(g) {
-		var pos = this.gameObjects.indexOf(g);
+	removeSprite(s) {
+		var pos = this.sprites.indexOf(s);
 		if (pos != -1) {
-			this.gameObjects.splice(pos, 1);
+			this.sprites.splice(pos, 1);
 		}
 	}
 
@@ -51,13 +53,52 @@ class GameEngineBase {
 
 }
 
-class GameObjectBase {
-	constructor(game, sprite) {
-		this.game = game;
-		this.sprite = sprite;
+/**
+ * Used for sprite directions.
+ */
+var Direction = {
+	NONE: 0,
+	LEFT : 1,
+	RIGHT : 2
+}
+
+class GameSprite extends Phaser.Sprite {
+	constructor(game, x, y, key, frame) {
+		super(game, x, y, key, frame);
+
+		this.checkWorldBounds = true;
+		this.direction = Direction.NONE;
+		this.anchor.setTo(0.5, 0.0);
+	}
+
+	/**
+	 * Sets the direction of the GameSprite, also flipping
+	 * the asset.
+	 */
+	setDirection(d) {
+		this.direction = d;
+		var scaleX = this.scale.x;
+		var scaleY = this.scale.y;
+		if (d == Direction.RIGHT) {
+			this.scale.setTo(Math.abs(scaleX), scaleY);
+		} else {
+			this.scale.setTo(-1 * Math.abs(scaleX), scaleY);
+		}
+	}
+
+	/**
+	 * Flips the direction of this GameSprite.
+	 */
+	flip() {
+		if (this.direction == Direction.LEFT) {
+			this.setDirection(Direction.RIGHT);
+		} else if (this.direction == Direction.RIGHT) {
+			this.setDirection(Direction.LEFT);
+		}
 	}
 
 }
+
 
 class Score {
 	constructor() {
