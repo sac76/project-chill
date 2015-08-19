@@ -62,14 +62,13 @@ class BalloonManSprite extends GameSprite {
 	animate() {
 		this.game.time.events.add(Phaser.Timer.SECOND * (3 + Math.random() * 5), 
 			function() {
-				this.somersault();
 				// inflate the balloon
-				/*this.inflate();
+				this.inflate();
 				// fly away
 				this.game.time.events.add(Phaser.Timer.SECOND * 0.5, 
 					function() {
 					this.fly();
-				}, this);*/
+				}, this);
 			}, this);
 	}
 
@@ -113,6 +112,11 @@ class BalloonManSprite extends GameSprite {
 
 	standup() {
 		this.animations.play('standup');
+
+		this.game.time.events.add(Phaser.Timer.SECOND * 8,
+			function() {
+				this.somersault();
+			}, this);
 	}
 
 	somersault() {
@@ -128,6 +132,16 @@ class BalloonManSprite extends GameSprite {
 
 	cheer() {
 		this.animations.play('cheer');
+
+		this.game.time.events.add(Phaser.Timer.SECOND * 1.5, 
+			function() {
+				var fadeAnim = this.game.add.tween(this).to( { alpha: 0 }, 150, Phaser.Easing.Linear.None, false, 1500);
+				fadeAnim.onComplete.add(
+					function() {
+					this.destroy();
+				}, this);
+				fadeAnim.start();
+			}, this);
 	}
 
 }
