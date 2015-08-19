@@ -14,9 +14,13 @@ class Weather {
 		this.cloudGroup.physicsBodyType = Phaser.Physics.ARCADE;
 
 		this.clouds = [];
-		for (var i = 0; i < 4; i++) {
+		for (var i = 0; i < 5; i++) {
 			var cloudSprite = this.createCloud();
 			cloudSprite.events.onOutOfBounds.add(this.onOutOfBounds, cloudSprite);
+
+			if (i % 2 != 0) {
+				cloudSprite.alpha = 0.7;
+			}
 
 			// for the first time, distribute the clouds at
 			// random across the screen
@@ -34,7 +38,7 @@ class Weather {
 		
 		this.game.physics.arcade.enable(cloudSprite);
 
-		var scale = 0.25 + Math.random() * 0.75;
+		var scale = 0.35 + Math.random() * 0.75;
 
 		cloudSprite.scale.setTo(scale, scale);
 		cloudSprite.y = 10 + Math.random() * 200;

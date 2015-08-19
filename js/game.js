@@ -8,9 +8,9 @@ class GameEngineBase {
 	}
 
 	init() {
-		this.game = new Phaser.Game(500, 400, Phaser.Auto, this.root, 
+		this.game = new Phaser.Game(640, 400, Phaser.Auto, this.root, 
 			{ preload: this.preload, create: this.create, update: this.update });
-		this.game.transparent = true;
+		//this.game.transparent = true;
 	}
 
 	preload() {
@@ -18,6 +18,9 @@ class GameEngineBase {
 	}
 
 	create() {
+
+this.game.stage.backgroundColor = "#d9ecfb";
+
 		this.sprites = [];
 		this.score = new Score();
 

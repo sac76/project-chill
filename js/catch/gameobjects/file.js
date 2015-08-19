@@ -103,7 +103,7 @@ class FallingCupcakeSprite extends FallingSprite {
 		super.onCollideWithGround();
 		
 		this.normal();
-		
+
 		this.animations.play('blink', 30, false, false);
 	}
 
