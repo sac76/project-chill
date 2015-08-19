@@ -138,7 +138,13 @@ class BalloonManSprite extends GameSprite {
 				var fadeAnim = this.game.add.tween(this).to( { alpha: 0 }, 150, Phaser.Easing.Linear.None, false, 1500);
 				fadeAnim.onComplete.add(
 					function() {
-					this.destroy();
+					this.game.time.events.add(Phaser.Timer.SECOND * 10,
+						function() {
+							this.x = -50 + this.game.width / 2 + Math.random() * 100;
+							this.alpha = 1;
+							this.idle();
+							this.animate();
+						}, this);
 				}, this);
 				fadeAnim.start();
 			}, this);

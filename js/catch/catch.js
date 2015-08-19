@@ -12,11 +12,12 @@ class CatchGameEngine extends GameEngineBase {
 	preload() {
 
 		// sprites
-		this.game.load.spritesheet('player', 'img/db_man_animations.png', 38, 48, 3);
+		//this.game.load.spritesheet('player', 'img/db_man_animations.png', 38, 48, 3);
 		this.game.load.spritesheet('cupcake', 'img/cupcake_spritesheet.png', 64, 82, 3);
 		this.game.load.spritesheet('airplane', 'img/airplane_spritesheet.png', 100, 50, 2);
 		
 		this.game.load.atlasJSONHash('balloon_man', 'img/balloon_man.png', 'img/balloon_man.json');
+		this.game.load.atlasJSONHash('box_man', 'img/box_man.png', 'img/box_man.json');
 
 		// images
 		this.game.load.image('cloud', 'img/cloud.png');
