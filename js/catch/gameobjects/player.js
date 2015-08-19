@@ -19,10 +19,11 @@ class Player extends GameSprite {
 
 		this.body.gravity.y = 250;
 		this.body.collideWorldBounds = true;
-		this.body.checkCollision.up = true;
-		this.body.bounce.setTo(0.15, 0.15);
+		this.body.bounce.setTo(0, 0.15);
+		this.body.immovable = true;
 
 		this.animations.add('idle');
+		this.animations.add('run');
 
 		this.cursors = this.game.input.keyboard.createCursorKeys();
 	}
@@ -42,12 +43,12 @@ class Player extends GameSprite {
 				case PlayerState.RUN_LEFT:
 					this.body.velocity.x = -300;
 					this.setDirection(Direction.LEFT);
-					//this.animations.play('run');
+					this.animations.play('run');
 					break;
 				case PlayerState.RUN_RIGHT:
 					this.body.velocity.x = 300;
 					this.setDirection(Direction.RIGHT);
-					//this.animations.play('run');
+					this.animations.play('run');
 					break;
 				default:
 					break;

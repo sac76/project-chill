@@ -80,6 +80,9 @@ class AirplaneSprite extends GameSprite {
 	}
 
 	fly() {
+		var soundFx = this.game.add.audio('airplane_flyby');
+		soundFx.play();
+
 		// total time to travel across the screen
 		var t = calculateTime(Math.abs(this.body.velocity.x), 
 			Math.abs(this.body.gravity.x), Math.abs(this.game.world.width));
