@@ -13,10 +13,12 @@ class CatchGameEngine extends GameEngineBase {
 
 		// sprites
 		this.game.load.spritesheet('player', 'img/db_man_animations.png', 38, 48, 3);
-		this.game.load.spritesheet('cupcake', 'img/cupcake_spritesheet.png', 64, 82, 3)
+		this.game.load.spritesheet('cupcake', 'img/cupcake_spritesheet.png', 64, 82, 3);
+		this.game.load.spritesheet('airplane', 'img/airplane_spritesheet.png', 100, 50, 2);
+		
+		this.game.load.atlasJSONHash('balloon_man', 'img/balloon_man.png', 'img/balloon_man.json');
 
 		// images
-		this.game.load.image('airplane', 'img/airplane.png');
 		this.game.load.image('cloud', 'img/cloud.png');
 		this.game.load.image('ground', 'img/ground.png');
 		this.game.load.image('tree', 'img/tree.png');
@@ -27,6 +29,7 @@ class CatchGameEngine extends GameEngineBase {
 		this.game.load.image('file2', 'img/files/page_white_excel.png');
 		this.game.load.image('file3', 'img/files/page_white_picture.png');
 		this.game.load.image('file4', 'img/files/page_white_word.png');
+		this.game.load.image('file5', 'img/files/page_white_acrobat_balloon.png');
 
 		// sounds
 		this.game.load.audio('airplane_flyby', "sound/airplane_flyby.wav");
@@ -69,6 +72,12 @@ class CatchGameEngine extends GameEngineBase {
 		// sun
 		this.game.add.sprite(this.game.width - 100, 50, 'sun', 0);
 
+		// man
+		this.balloonMan = new BalloonManSprite(this.game, this.game.width - 350, this.ground.y);
+		this.balloonMan.animate();
+
+		this.game.add.existing(this.balloonMan);
+		
 		// create player
 		this.player = new Player(this.game);
 		this.player.idle();
@@ -128,6 +137,11 @@ class CatchGameEngine extends GameEngineBase {
 
 		// collide player and ground
 		this.game.physics.arcade.collide(this.player, this.ground);
+
+		// collide extras and ground
+		this.game.physics.arcade.collide(this.ground, this.balloonMan, function(ground, balloonMan) {
+			balloonMan.onCollideWithGround();
+		}, null, this);
 	}
 
 	

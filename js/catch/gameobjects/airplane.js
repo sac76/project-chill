@@ -14,6 +14,9 @@ class AirplaneSprite extends GameSprite {
 	constructor(game) {
 		super(game, 0, 25, 'airplane', 0);
 
+		this.animations.add('fly', [0, 1]);
+		this.animations.play('fly', 50, true, true);
+
 		// number of times plane has traveled across
 		// the screen
 		this.currentLap = 0; 
@@ -57,7 +60,7 @@ class AirplaneSprite extends GameSprite {
 	}
 
 	getSpeed() {
-		return 50;
+		return 75;
 	}
 
 	getGravity() {
