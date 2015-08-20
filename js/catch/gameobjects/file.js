@@ -2,10 +2,13 @@
 
 var fileNames = [
 	'file1',
+	'file1',
+	'file2',
 	'file2',
 	'file3',
-	'file4'
-	//'file5'
+	'file3',
+	'file4',
+	'file5'
 ];
 
 class FallingSprite extends GameSprite {
@@ -56,17 +59,23 @@ class FallingFileSprite extends FallingSprite {
 	constructor(game, x, y) {
 		super(game, x, y, fileNames[Math.round(Math.random() * fileNames.length)], 0);
 		
-		//this.width = 32;
-		//this.height = 32;
 		this.scale.x = 0.5;
 		this.scale.y = 0.5;
 
 		this.body.bounce.setTo(0, 0.1);
 		this.body.gravity.y = Math.round(25 + Math.random() * 75);
 		this.body.velocity.y = -25;
+
+		if (this.key == 'file5') {
+			this.body.bounce.setTo(0, 0.2);
+			this.body.gravity.y = 5;
+		}
 	}
 
 	getKeepAliveDuration() {
+		if (this.key == 'file5') {
+			return 3.5;
+		}
 		return 1;
 	}
 

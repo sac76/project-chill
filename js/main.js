@@ -8,13 +8,42 @@ var gameEngine;
 
 function init() {
     //var game = new GameBase('main_canvas');
-    gameEngine = new CatchGameEngine('main_canvas');
-    gameEngine.init();
+    //gameEngine = new CatchGameEngine('main_canvas');
+    //gameEngine.init();
 
 	//var game = new Catch($("#main_canvas").get(0));
 	//game.init();
 	//game.run();
+
+    //$('#container').hide();
+    /*$('#container').animate({
+        opacity: 0
+    }, 0, "swing", fadeErrorText);*/
+
+    //fadeErrorText();
+
+    hideErrorText();
 }
+
+function hideErrorText() {
+    $("#errorpage").delay(2000).animate({
+        opacity: 0
+    }, 400, "swing", function() {
+        $("#errorpage").hide(0, showLaptop);
+    });
+}
+
+function showLaptop() {
+    $("#container").animate({
+        opacity: 100
+    }, 200, "swing", startGame);
+}
+
+function startGame() {
+    gameEngine = new CatchGameEngine('main_canvas');
+    gameEngine.init();
+}
+
 
 function loadScripts(arr, path) {
     var _arr = $.map(arr, function(scr) {

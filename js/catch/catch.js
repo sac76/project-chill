@@ -12,7 +12,6 @@ class CatchGameEngine extends GameEngineBase {
 	preload() {
 
 		// sprites
-		//this.game.load.spritesheet('player', 'img/db_man_animations.png', 38, 48, 3);
 		this.game.load.spritesheet('cupcake', 'img/cupcake_spritesheet.png', 64, 82, 3);
 		this.game.load.spritesheet('airplane', 'img/airplane_spritesheet.png', 100, 50, 2);
 		
@@ -34,10 +33,14 @@ class CatchGameEngine extends GameEngineBase {
 
 		// sounds
 		this.game.load.audio('airplane_flyby', "sound/airplane_flyby.wav");
+		this.game.load.audio('collect', "sound/getfile.wav");
+		this.game.load.audio('toss', "sound/toss.wav");
 	}
 
 	create() {
 		super.create();
+
+		this.game.stage.scale.pageAlignHorizontally = true;
 
 		// create ground
 		this.ground = this.game.add.sprite(0, this.game.height - 30, 'ground', 0);
@@ -75,8 +78,7 @@ class CatchGameEngine extends GameEngineBase {
 
 		// man
 		this.balloonMan = new BalloonManSprite(this.game, this.game.width - 350, this.ground.y);
-		this.balloonMan.animate();
-
+		
 		this.game.add.existing(this.balloonMan);
 		
 		// create player
@@ -90,44 +92,56 @@ class CatchGameEngine extends GameEngineBase {
 		this.fallingObjects.enableBody = true;
 		this.fallingObjects.physicsBodyType = Phaser.Physics.ARCADE;
 
-		// create airplane
-		this.airplane = new AirplaneSprite(this.game);
-
-		this.game.add.existing(this.airplane);
-
-		this.airplane.events.onDropFile.add(function(a) {
-			var fallingSprite = null;
-
-			var x = Math.min(Math.max(a.x, 30));
-			var y = a.y;
-
-			// figure out what to drop
-			var rand = Math.random();
-			if (rand > 0.95) {
-				fallingSprite = new FallingCupcakeSprite(a.game, x, y);
-			} else {
-				fallingSprite = new FallingFileSprite(a.game, x, y);
-			}
-			this.fallingObjects.add(fallingSprite);
-		}, this);
-
 		// weather
 		this.weather = new Weather(this.game);
 
-		// wait a few seconds before the
-		// airplane starts flying
-		this.game.time.events.add(Phaser.Timer.SECOND * 3, 
+		// start game
+		this.game.time.events.add(Phaser.Timer.SECOND * 4,
 			function() {
+
+				// create airplane
+				this.airplane = new AirplaneSprite(this.game);
+
+				this.game.add.existing(this.airplane);
+
+				this.airplane.events.onDropFile.add(function(a) {
+
+					var soundFx = this.game.add.audio('toss');
+					soundFx.play();
+
+					var fallingSprite = null;
+
+					var x = Math.min(Math.max(a.x, 30));
+					var y = a.y;
+
+					// figure out what to drop
+					var rand = Math.random();
+					if (rand > 0.95) {
+						fallingSprite = new FallingCupcakeSprite(a.game, x, y);
+					} else {
+						fallingSprite = new FallingFileSprite(a.game, x, y);
+					}
+					this.fallingObjects.add(fallingSprite);
+				}, this);
+
 				this.airplane.takeoff();
 				this.airplane.fly();
+
+				this.balloonMan.animate();
 			}, this);
 
+		$('canvas').animate({
+			opacity: 100
+		}, 1300);
 	}
 
 	update() {
 		
 		// collide player and files
 		this.game.physics.arcade.collide(this.player, this.fallingObjects, function (player, fallingFile) {
+			var soundFx = this.game.add.audio('collect');
+			soundFx.play();
+
 			fallingFile.destroy();
 		}, null, this);
 
