@@ -22,6 +22,8 @@ function init() {
 
     //fadeErrorText();
 
+    $("#container").hide();
+
     hideErrorText();
 }
 
@@ -34,9 +36,11 @@ function hideErrorText() {
 }
 
 function showLaptop() {
-    $("#container").animate({
-        opacity: 100
-    }, 200, "swing", startGame);
+    $("#container").show(0, function() {
+        $("#container").animate({
+            opacity: 100
+        }, 200, "swing", startGame);
+    });
 }
 
 function startGame() {

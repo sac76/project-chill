@@ -18,7 +18,7 @@ class BalloonManSprite extends GameSprite {
 		this.animations.add('idle', ['man_00.png']);
 		this.animations.add('inflate', ['man_01.png']);
 		this.animations.add('fall', ['man_fall_00.png']);
-		this.animations.add('dead', ['man_down_00.png']);
+		this.animations.add('dead', ['man_fall_00.png', 'man_down_00.png'], 5);
 		this.animations.add('cheer', ['man_cheer_00.png'], 12, false, false);
 		this.animations.add('standup', ['man_down_00.png', 'man_standup_00.png', 
 			'man_standup_01.png', 'man_standup_02.png', 'man_00.png'], 12, false, false);

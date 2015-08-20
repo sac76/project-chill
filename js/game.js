@@ -8,7 +8,7 @@ class GameEngineBase {
 	}
 
 	init() {
-		this.game = new Phaser.Game(640, 398, Phaser.Auto, this.root, 
+		this.game = new Phaser.Game(640, 368, Phaser.Auto, this.root, 
 			{ preload: this.preload, create: this.create, update: this.update });
 		//this.game.transparent = true;
 	}
