@@ -24,6 +24,8 @@ class CatchGameEngine extends GameEngineBase {
 		this.game.load.image('tree', 'img/tree.png');
 		this.game.load.image('sun', 'img/sun.png');
 		this.game.load.image('birds', 'img/birds.png');
+		this.game.load.image('cityright', 'img/cityright.png');
+		this.game.load.image('mountains', 'img/mountains.png');
 
 		this.game.load.image('file1', 'img/files/page_white_acrobat.png');
 		this.game.load.image('file2', 'img/files/page_white_excel.png');
@@ -53,10 +55,17 @@ class CatchGameEngine extends GameEngineBase {
 		this.ground.body.collidesWorldBounds = true;
 		this.ground.body.immovable = true;
 
+		// create background
+		var mountains = this.game.add.sprite(0, this.ground.y, 'mountains', 0);
+
+		mountains.anchor.x = 0.0;
+		mountains.anchor.y = 1.0;
+		mountains.scale.setTo(0.75, 0.75);
+
 		// trees
 		var trees = [];
 		for (var i = 0; i < 4; i++) {
-			var tree = this.game.add.sprite(40 + Math.random() * this.game.width - 80, 
+			var tree = this.game.add.sprite(40 + Math.random() * this.game.width - 180, 
 				this.ground.y, 'tree', 0);
 
 			tree.anchor.x = 0.0;
@@ -69,7 +78,7 @@ class CatchGameEngine extends GameEngineBase {
 		// birds
 		var birdsLeft = this.game.add.sprite(50, 200, 'birds', 0);
 
-		var birdsRight = this.game.add.sprite(this.game.width - 80, this.game.height - 100, 'birds', 0);
+		var birdsRight = this.game.add.sprite(this.game.width - 120, this.game.height - 100, 'birds', 0);
 		birdsRight.scale.x = -1;
 		birdsRight.scale.y = 1;
 
