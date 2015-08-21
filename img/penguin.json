@@ -1,0 +1,21 @@
+{"frames": {
+
+"stand_01.png":
+{
+	"frame": {"x":2,"y":2,"w":44,"h":46},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":30,"y":154,"w":44,"h":46},
+	"sourceSize": {"w":108,"h":200},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "penguin.png",
+	"format": "RGBA8888",
+	"size": {"w":48,"h":50},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:8b93bb6d059be9978404d3dad8cf3fa8:a8f53e438032820da6921a49157c81b1:6811a9a90bad8562d7be890a479a72ac$"
+}
+}

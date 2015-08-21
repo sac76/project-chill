@@ -16,10 +16,13 @@ class BalloonManSprite extends GameSprite {
 
 		// animations
 		this.animations.add('idle', ['man_00.png']);
+		this.animations.add('sit', ['man_00.png', 'man_standup_01.png'], 1, false, false);
 		this.animations.add('inflate', ['man_01.png']);
 		this.animations.add('fall', ['man_fall_00.png']);
 		this.animations.add('dead', ['man_fall_00.png', 'man_down_00.png'], 5);
 		this.animations.add('cheer', ['man_cheer_00.png'], 12, false, false);
+		this.animations.add('grumble', ['grumble_01.png', 'grumble_02.png', 'grumble_03.png'], 11, true);
+		this.animations.add('sitstandup', ['man_standup_01.png', 'man_standup_02.png', 'man_00.png'], 12, false, false);
 		this.animations.add('standup', ['man_down_00.png', 'man_standup_00.png', 
 			'man_standup_01.png', 'man_standup_02.png', 'man_00.png'], 12, false, false);
 		this.animations.add('fly', ['man_01.png', 'man_02.png', 'man_03.png', 'man_04.png', 'man_05.png'], 
@@ -28,6 +31,8 @@ class BalloonManSprite extends GameSprite {
 			'man_somersault_02.png', 'man_somersault_03.png', 'man_somersault_04.png', 'man_somersault_05.png',
 			'man_somersault_06.png'],
 			10, false, false);
+		this.animations.add('jumprope', ['jump_rope_01.png', 'jump_rope_02.png', 'jump_rope_03.png', 'jump_rope_04.png',
+			'jump_rope_05.png'], 10, false, false);
 
 		// destroy this sprite if it ever
 		// travels out of bounds
@@ -60,15 +65,30 @@ class BalloonManSprite extends GameSprite {
 	}
 
 	animate() {
+
 		this.game.time.events.add(Phaser.Timer.SECOND * (15 + Math.random() * 5), 
 			function() {
-				// inflate the balloon
-				this.inflate();
-				// fly away
-				this.game.time.events.add(Phaser.Timer.SECOND * 0.5, 
+				// jump rope
+				this.jumpRope();
+
+				this.game.time.events.add(Phaser.Timer.SECOND * 10,
 					function() {
-					this.fly();
-				}, this);
+						// stand around
+						this.sit();
+
+						// fly away!
+						this.game.time.events.add(Phaser.Timer.SECOND * 8,
+							function() {
+								// stand up
+								this.sitStandUp();
+
+								this.game.time.events.add(Phaser.Timer.SECOND * 5,
+									function() {
+										this.inflate();
+									}, this);
+							}, this);
+					}, this);
+				
 			}, this);
 	}
 
@@ -76,8 +96,22 @@ class BalloonManSprite extends GameSprite {
 		this.animations.play('idle');
 	}
 
+	sit() {
+		this.animations.play('sit');
+	}
+
+	sitStandUp() {
+		this.animations.play('sitstandup');
+	}
+
 	inflate() {
 		this.animations.play('inflate');
+
+		// fly away
+		this.game.time.events.add(Phaser.Timer.SECOND * 0.5, 
+			function() {
+				this.fly();
+			}, this);
 	}
 
 	fly() {
@@ -113,9 +147,21 @@ class BalloonManSprite extends GameSprite {
 	standup() {
 		this.animations.play('standup');
 
-		this.game.time.events.add(Phaser.Timer.SECOND * 8,
+		this.game.time.events.add(Phaser.Timer.SECOND * 1.5,
 			function() {
-				this.somersault();
+				// argh
+				this.grumble();
+
+				this.game.time.events.add(Phaser.Timer.SECOND * 3,
+					function() {
+						this.idle();
+
+						this.game.time.events.add(Phaser.Timer.SECOND * 8,
+							function() {
+								// time to do a trick!
+								this.somersault();
+							}, this);
+					}, this);
 			}, this);
 	}
 
@@ -148,6 +194,14 @@ class BalloonManSprite extends GameSprite {
 				}, this);
 				fadeAnim.start();
 			}, this);
+	}
+
+	grumble() {
+		this.animations.play('grumble');
+	}
+
+	jumpRope() {
+		this.animations.play('jumprope', 10, true);
 	}
 
 }

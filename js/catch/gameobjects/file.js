@@ -18,9 +18,9 @@ class FallingSprite extends GameSprite {
 		this.config = config;
 		this.collidedWithGround = false;
 
-		this.game.physics.arcade.enable(this);
+		//this.game.physics.arcade.enable(this);
 
-		this.body.collideWorldBounds = true;
+		//this.body.collideWorldBounds = true;
 
 		// destroy this sprite if it ever
 		// travels out of bounds
@@ -28,6 +28,12 @@ class FallingSprite extends GameSprite {
 			function() {
 				this.destroy();
 			}, this);
+	}
+
+	enablePhysics() {
+		super.enablePhysics();
+
+		this.body.collideWorldBounds = true;
 	}
 
 	onCollideWithGround() {
@@ -64,6 +70,10 @@ class FallingFileSprite extends FallingSprite {
 		
 		this.scale.x = 0.5;
 		this.scale.y = 0.5;
+	}
+
+	enablePhysics() {
+		super.enablePhysics();
 
 		this.body.bounce.setTo(0, this.config.getBounce());
 		this.body.gravity.y = this.config.getGravity();
@@ -95,10 +105,6 @@ class FallingCupcakeSprite extends FallingSprite {
 		this.width = 32;
 		this.height = 41;
 
-		this.body.bounce.setTo(0, 0.1);
-		this.body.gravity.y = 100;
-		this.body.velocity.y = -50;
-
 		this.animations.add('blink', [0, 1]);
 
 		this.normal();
@@ -107,6 +113,14 @@ class FallingCupcakeSprite extends FallingSprite {
 			function() {
 				this.happy();
 			}, this);
+	}
+
+	enablePhysics() {
+		super.enablePhysics();
+
+		this.body.bounce.setTo(0, 0.1);
+		this.body.gravity.y = 100;
+		this.body.velocity.y = -50;
 	}
 
 	onCollideWithGround() {

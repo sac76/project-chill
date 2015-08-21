@@ -1,37 +1,67 @@
 "use strict";
 
-// Catch
+var useAltAssets = false;
 
+// Catch
 class CatchGameEngine extends GameEngineBase {
 	constructor(root) {
 		super(root);
 
 		this.numMisses = 0;
+		this.useAltAssets = false;
 	}
 
 	preload() {
 
-		// sprites
-		this.game.load.spritesheet('cupcake', 'img/cupcake_spritesheet.png', 64, 82, 3);
-		this.game.load.spritesheet('airplane', 'img/airplane_spritesheet.png', 100, 50, 2);
-		
-		this.game.load.atlasJSONHash('balloon_man', 'img/balloon_man.png', 'img/balloon_man.json');
-		this.game.load.atlasJSONHash('box_man', 'img/box_man.png', 'img/box_man.json');
+		if (!useAltAssets) {
 
-		// images
-		this.game.load.image('cloud', 'img/cloud.png');
-		this.game.load.image('ground', 'img/ground.png');
-		this.game.load.image('tree', 'img/tree.png');
-		this.game.load.image('sun', 'img/sun.png');
-		this.game.load.image('birds', 'img/birds.png');
-		this.game.load.image('cityright', 'img/cityright.png');
-		this.game.load.image('mountains', 'img/mountains.png');
+			// sprites
+			this.game.load.spritesheet('cupcake', 'img/cupcake_spritesheet.png', 64, 82, 3);
+			this.game.load.spritesheet('airplane', 'img/airplane_spritesheet.png', 100, 50, 2);
+			
+			this.game.load.atlasJSONHash('balloon_man', 'img/balloon_man.png', 'img/balloon_man.json');
+			this.game.load.atlasJSONHash('box_man', 'img/box_man.png', 'img/box_man.json');
 
-		this.game.load.image('file1', 'img/files/page_white_acrobat.png');
-		this.game.load.image('file2', 'img/files/page_white_excel.png');
-		this.game.load.image('file3', 'img/files/page_white_picture.png');
-		this.game.load.image('file4', 'img/files/page_white_word.png');
-		this.game.load.image('file5', 'img/files/page_white_acrobat_balloon.png');
+			// images
+			this.game.load.image('cloud', 'img/cloud.png');
+			this.game.load.image('ground', 'img/ground.png');
+			this.game.load.image('tree', 'img/tree.png');
+			this.game.load.image('sun', 'img/sun.png');
+			this.game.load.image('birds', 'img/birds.png');
+			this.game.load.image('cityright', 'img/cityright.png');
+			this.game.load.image('mountains', 'img/mountains.png');
+
+			this.game.load.image('file1', 'img/files/page_white_acrobat.png');
+			this.game.load.image('file2', 'img/files/page_white_excel.png');
+			this.game.load.image('file3', 'img/files/page_white_picture.png');
+			this.game.load.image('file4', 'img/files/page_white_word.png');
+			this.game.load.image('file5', 'img/files/page_white_acrobat_balloon.png');
+		} else {
+
+			// sprites
+			this.game.load.spritesheet('cupcake', 'img/cupcake_spritesheet.png', 64, 82, 3);
+			this.game.load.spritesheet('airplane', 'img/airplane_spritesheet.png', 100, 50, 2);
+			
+			this.game.load.atlasJSONHash('balloon_man', 'img/balloon_man.png', 'img/balloon_man.json');
+			this.game.load.atlasJSONHash('box_man', 'img/blob_man.png', 'img/blob_man.json');
+
+			// images
+			this.game.load.image('cloud', 'img/cloud.png');
+			this.game.load.image('ground', 'img/ground.png');
+			this.game.load.image('tree', 'img/tree.png');
+			this.game.load.image('sun', 'img/sun.png');
+			this.game.load.image('birds', 'img/birds.png');
+			this.game.load.image('cityright', 'img/cityright.png');
+			this.game.load.image('mountains', 'img/mountains.png');
+
+			this.game.load.image('file1', 'img/alt/file1.png');
+			this.game.load.image('file2', 'img/alt/file2.png');
+			this.game.load.image('file3', 'img/alt/file3.png');
+			this.game.load.image('file4', 'img/alt/file4.png');
+			this.game.load.image('file5', 'img/alt/file5.png');
+		}
+
+		this.game.load.atlasJSONHash('penguin', 'img/penguin.png', 'img/penguin.json');
 
 		// sounds
 		this.game.load.audio('airplane_flyby', "sound/airplane_flyby.wav");
@@ -90,11 +120,16 @@ class CatchGameEngine extends GameEngineBase {
 		
 		this.game.add.existing(this.balloonMan);
 		
+		// penguin
+		//this.penguin = new Penguin(this.game, 200, this.ground.y);
+
+		//this.game.add.existing(this.penguin);
+
 		// score
 		this.scoreText = this.game.add.text(16, 5, '0 MB', { font: 'Open Sans', fontSize: '17px', fill: '#374265' });
 
 		// create player
-		this.player = new Player(this.game);
+		this.player = new Player(this.game, useAltAssets);
 		this.player.idle();
 		
 		this.game.add.existing(this.player);
@@ -134,7 +169,11 @@ class CatchGameEngine extends GameEngineBase {
 					} else {
 						fallingSprite = new FallingFileSprite(a.game, x, y, fileConfig);
 					}
+					
 					this.fallingObjects.add(fallingSprite);
+
+					fallingSprite.enablePhysics();
+					fallingSprite.update();
 				}, this);
 
 				this.airplane.takeoff();

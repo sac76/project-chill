@@ -10,10 +10,8 @@ var PlayerState = {
 }
 
 class Player extends GameSprite {
-	constructor(game) {
+	constructor(game, useAltAssets) {
 		super(game, game.world.width / 2, game.world.height - 50, 'box_man', 0);
-
-		this.scale.setTo(0.5, 0.5);
 
 		game.physics.arcade.enable(this);
 
@@ -22,11 +20,22 @@ class Player extends GameSprite {
 		this.body.bounce.setTo(0, 0.15);
 		this.body.immovable = true;
 
-		this.animations.add('idle', ['man_idle_01.png'/*, 'man_idle_02.png', 'man_idle_01.png', 'man_idle_03.png'*/], 6, true, false);
-		this.animations.add('run', ['man_run_01.png', 'man_run_02.png', 'man_run_02.png', 'man_run_03.png', 'man_run_04.png',
-			'man_run_05.png', 'man_run_06.png', 'man_run_06.png', 'man_run_07.png', 'man_run_08.png'], 12, true, false);
-
 		this.cursors = this.game.input.keyboard.createCursorKeys();
+
+		var runAnimFrames = [];
+
+		if (!useAltAssets) {
+			this.scale.setTo(0.5, 0.5);
+			runAnimFrames = ['man_run_01.png', 'man_run_02.png', 'man_run_02.png', 'man_run_03.png', 'man_run_04.png',
+			'man_run_05.png', 'man_run_06.png', 'man_run_06.png', 'man_run_07.png', 'man_run_08.png'];
+		} else {
+			this.scale.setTo(0.75, 0.75);
+			runAnimFrames = ['man_run_01.png', 'man_run_02.png', 'man_run_03.png', 'man_run_04.png',
+			'man_run_05.png', 'man_run_06.png', 'man_run_07.png', 'man_run_08.png', 'man_run_09', 'man_run_10'];
+		}
+
+		this.animations.add('idle', ['man_idle_01.png'/*, 'man_idle_02.png', 'man_idle_01.png', 'man_idle_03.png'*/], 6, true, false);
+		this.animations.add('run', runAnimFrames, 12, true, false);
 
 		this.idle();
 	}

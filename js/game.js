@@ -67,9 +67,14 @@ class GameSprite extends Phaser.Sprite {
 	constructor(game, x, y, key, frame) {
 		super(game, x, y, key, frame);
 
-		this.checkWorldBounds = true;
 		this.direction = Direction.NONE;
+
+		this.checkWorldBounds = true;
 		this.anchor.setTo(0.5, 0.0);
+	}
+
+	enablePhysics() {
+		// override
 	}
 
 	/**

@@ -49,9 +49,13 @@ class AirplaneConfig {
 	getAltitudeVariation() {
 		if (this.currentLap > 5) {
 			var rand = Math.random();
-			if (rand > 0.95) {
+			var adjustment = 0;
+			if (this.currentLap > 10) {
+				adjustment = 0.2;
+			}
+			if (rand > 0.95 - adjustment) {
 				return 90;
-			} else if (rand > 0.9) {
+			} else if (rand > 0.9 - adjustment) {
 				return 60;
 			}
 		}

@@ -41,7 +41,7 @@ class Weather {
 		var scale = 0.35 + Math.random() * 0.75;
 
 		cloudSprite.scale.setTo(scale, scale);
-		cloudSprite.y = 10 + Math.random() * 180;
+		cloudSprite.y = 10 + Math.random() * 200;
 
 		cloudSprite.body.velocity.x = 10 + Math.random() * 30;
 
