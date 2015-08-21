@@ -60,7 +60,7 @@ class BalloonManSprite extends GameSprite {
 	}
 
 	animate() {
-		this.game.time.events.add(Phaser.Timer.SECOND * (3 + Math.random() * 5), 
+		this.game.time.events.add(Phaser.Timer.SECOND * (15 + Math.random() * 5), 
 			function() {
 				// inflate the balloon
 				this.inflate();

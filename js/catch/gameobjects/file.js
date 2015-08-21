@@ -12,8 +12,11 @@ var fileNames = [
 ];
 
 class FallingSprite extends GameSprite {
-	constructor(game, x, y, key, frame) {
+	constructor(game, x, y, key, frame, config) {
 		super(game, x, y, key, frame);
+
+		this.config = config;
+		this.collidedWithGround = false;
 
 		this.game.physics.arcade.enable(this);
 
@@ -43,7 +46,7 @@ class FallingSprite extends GameSprite {
 	 * alive after falling on the ground.
 	 */
 	getKeepAliveDuration() {
-		return 0;
+		return this.config.getKeepAliveDuration();
 	}
 
 	/**
@@ -56,31 +59,26 @@ class FallingSprite extends GameSprite {
 }
 
 class FallingFileSprite extends FallingSprite {
-	constructor(game, x, y) {
-		super(game, x, y, fileNames[Math.round(Math.random() * fileNames.length)], 0);
+	constructor(game, x, y, config) {
+		super(game, x, y, config.getFileKey(), 0, config);
 		
 		this.scale.x = 0.5;
 		this.scale.y = 0.5;
 
-		this.body.bounce.setTo(0, 0.1);
-		this.body.gravity.y = Math.round(25 + Math.random() * 75);
-		this.body.velocity.y = -25;
-
-		if (this.key == 'file5') {
-			this.body.bounce.setTo(0, 0.2);
-			this.body.gravity.y = 5;
-		}
-	}
-
-	getKeepAliveDuration() {
-		if (this.key == 'file5') {
-			return 3.5;
-		}
-		return 1;
+		this.body.bounce.setTo(0, this.config.getBounce());
+		this.body.gravity.y = this.config.getGravity();
+		this.body.velocity.y = this.config.getVelocity();
 	}
 
 	getPoints() {
-		return 5 * this.body.gravity.y;
+		var points = this.config.getPoints();
+
+		// You only get half points if the file
+		// has touched the ground
+		if (this.collidedWithGround) {
+			return Math.round(points * 0.5);
+		}
+		return points;
 	}
 }
 
@@ -114,6 +112,8 @@ class FallingCupcakeSprite extends FallingSprite {
 	onCollideWithGround() {
 		super.onCollideWithGround();
 		
+		this.collidedWithGround = true;
+
 		this.normal();
 
 		this.animations.play('blink', 30, false, false);
@@ -127,8 +127,8 @@ class FallingCupcakeSprite extends FallingSprite {
 		this.frame = CupcakeEmotion.HAPPY;
 	}
 
-	blink() {
-
+	getPoints() {
+		return 50;
 	}
 
 	getKeepAliveDuration() {

@@ -90,6 +90,9 @@ class CatchGameEngine extends GameEngineBase {
 		
 		this.game.add.existing(this.balloonMan);
 		
+		// score
+		this.scoreText = this.game.add.text(16, 5, '0 MB', { font: 'Open Sans', fontSize: '17px', fill: '#374265' });
+
 		// create player
 		this.player = new Player(this.game);
 		this.player.idle();
@@ -123,12 +126,13 @@ class CatchGameEngine extends GameEngineBase {
 					var x = Math.min(Math.max(a.x, 30));
 					var y = a.y;
 
+					var fileConfig = new FileConfig(this.game, this.airplane.config);
+
 					// figure out what to drop
-					var rand = Math.random();
-					if (rand > 0.95) {
+					if (fileConfig.shouldShowCupcake()) {
 						fallingSprite = new FallingCupcakeSprite(a.game, x, y);
 					} else {
-						fallingSprite = new FallingFileSprite(a.game, x, y);
+						fallingSprite = new FallingFileSprite(a.game, x, y, fileConfig);
 					}
 					this.fallingObjects.add(fallingSprite);
 				}, this);
@@ -150,6 +154,9 @@ class CatchGameEngine extends GameEngineBase {
 		this.game.physics.arcade.collide(this.player, this.fallingObjects, function (player, fallingFile) {
 			var soundFx = this.game.add.audio('collect');
 			soundFx.play();
+
+			this.score.increment(fallingFile.getPoints());
+			this.scoreText.text = this.score.totalScore + " MB";
 
 			fallingFile.destroy();
 		}, null, this);

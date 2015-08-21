@@ -25,8 +25,6 @@ class GameEngineBase {
 		this.score = new Score();
 
 		this.cursors = this.game.input.keyboard.createCursorKeys();
-
-		//this.scoreText = this.game.add.text(16, 16, '0', { fontSize: '32px', fill: '#000' })
 	}
 
 	update() {
